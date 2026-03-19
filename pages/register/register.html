@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Os Crias - Registro</title>
+</head>
+<style>
+*{
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(35deg,#8f8f8f,#000000);
+}
+.registerPanel{
+    background:white;
+    padding:35px;
+    border-radius:10px;
+    width:400px;
+    height: 550px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    justify-content: center;
+    text-align: center;
+}
+.registerPanel h1{
+    font-size:30px;
+    margin-bottom:35px;
+    margin-top: -5px;
+}
+.registerPanel input{
+    width:100%;
+    padding:12px;
+    margin-bottom:10px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:14px;
+}
+.registerPanel input:focus{
+    outline:none;
+    border-color:#2a5298;
+}
+.registerPanel button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:6px;
+    background:#000000;
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
+    margin-top: 10px;
+}
+.registerPanel button:hover{
+    background:#8f8f8f;
+}
+.registerPanel label{
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+}
+#result{
+    margin-top: -15px;
+    font-size: 14px;
+    color: rgb(0, 0, 0);
+}
+.lgSfundo{
+    position: absolute;
+    top: -20px;
+    left: 43.8vw;
+    width: 150px;
+    height: auto;
+}
+</style>
+<body>
+    <img src="/imgs/logo/Os crias sem fundo.png" alt="" class="lgSfundo">
+    <div class="registerPanel">
+        <h1>Registro</h1>
+            <label for="registerNome">Nome:</label>
+            <input type="text" id="registerNome" name="registerNome" required><br><br>
+            <label for="registerCpf">CPF:</label>
+            <input type="text" id="registerCpf" name="registerCpf" required><br><br>
+            <label for="registerEmail">Email:</label>
+            <input type="text" id="registerEmail" name="registerEmail" required><br><br>
+            <label for="registerSenha">Senha:</label>
+            <input type="password" id="registerSenha" name="registerSenha" required><br><br>
+            <div id="result">  </div>
+            <button onclick="register()">Registrar</button>
+    </div>
+</body>
+<script>
+function showMessage(text, type){
+    const result = document.getElementById("result")
+    result.innerText = text
+    result.className = type
+}
+
+    async function register(){
+
+    let nome = document.getElementById('registerNome').value.trim()
+    let cpf = document.getElementById('registerCpf').value.trim()
+    let email = document.getElementById('registerEmail').value.trim()
+    let senha = document.getElementById('registerSenha').value.trim()
+
+    if(!nome || !cpf || !email || !senha){
+        showMessage("Preencha todos os campos.","error")
+        return
+    }
+
+    if (nome.length > 200) {
+        showMessage("Nome deve ter no máximo 200 caracteres.", "error")
+        return
+    }
+
+    if (cpf.length !== 11 || !/^\d+$/.test(cpf)) {
+        showMessage("CPF deve ter exatamente 11 dígitos numéricos.", "error")
+        return
+    }
+
+    if (email.length > 200 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showMessage("Email deve ter no máximo 200 caracteres e formato válido.", "error")
+        return
+    }
+
+    if (senha.length < 8 || senha.length > 16) {
+        showMessage("Senha deve ter entre 8 e 16 caracteres.", "error")
+        return
+    }
+
+    try{
+
+        const response = await fetch('http://191.235.240.112:8000/register',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({nome, cpf, email, senha})
+        })
+
+        const result = await response.json()
+
+        if(response.ok){
+            showMessage(result.message || "Registro realizado!","success")
+            window.location.href = '/pages/login/login.html'
+        }else{
+            showMessage(result.detail || "Erro no registro","error")
+        }
+
+    }catch(e){
+        showMessage("Erro na conexão com o servidor.","error")
+    }
+
+}
+</script>
+</html>

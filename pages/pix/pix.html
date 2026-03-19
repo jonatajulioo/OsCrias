@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+*{
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(35deg,#8f8f8f,#000000);
+}
+.lgSfundo{
+    position: absolute;
+    top: -20px;
+    left: 43.8vw;
+    width: 150px;
+    height: auto;
+}
+.container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background: #8f8f8f;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    height: 250px;
+
+}
+.sectionTop{
+    margin-top: 30px;
+}
+.sectionMid{
+    margin-top: 10px;
+    flex-direction: column-reverse;
+    padding: -20px;
+}
+
+.sectionBot{
+    margin-top: 10px;
+}
+.container button{
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #000000;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.container button:hover{
+    background-color: rgb(47, 64, 160);
+    color: #8f8f8f;
+}
+</style>
+<body>
+    <img src="/imgs/logo/Os crias sem fundo.png" alt="" class="lgSfundo">
+
+    <div class="container">
+
+        <div class="sectionTop">
+            <button id="fazerPix">Fazer Pix</button>
+        </div>
+        <div class="sectionMid">
+            <button onclick="window.location.href = 'cadastrarchave/cadastrarchave.html'" id="cadastrarChave">Cadastrar chave Pix</button>
+        </div>
+        <div class="sectionBot">
+            <button id="minhaChave">Minha chave Pix</button>
+        </div>
+
+
+    </div>
+
+<script>
+    if(!localStorage.getItem("token")){
+        window.location.href = "/index.html"
+    }
+
+(async () => {
+
+    try{
+
+        const response = await fetch('http://191.235.240.112:8000/user/' + localStorage.getItem("email"),{
+            method:'GET',
+            headers:{'Content-Type':'application/json'}
+        })
+
+        const result = await response.json()
+
+
+
+        if(response.ok){
+            const user = result
+            
+
+
+console.log(user.nome)
+
+        }else{
+            console.error(result.detail || "Erro ao buscar dados do usuário")
+        }
+    }catch(error){
+        console.error("Erro na requisição:", error)
+    }
+});
+
+
+
+</script>
+</body>
+<script src="/js/chamarUsuario.js"></script>
+<script src="/js/carregarSaldo.js"></script>
+<script src="/js/logout.js"></script>
+</html>

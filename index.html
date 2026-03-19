@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Os Crias</title>
+</head>
+<style>
+*{
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(35deg,#8f8f8f,#000000);
+}
+.loginPanel{
+    background:white;
+    padding:35px;
+    border-radius:10px;
+    width:400px;
+    height: 370px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    justify-content: center;
+    text-align: center;
+}
+.loginPanel h1{
+    font-size:22px;
+    margin-bottom:55px;
+    margin-top: -5px;
+}
+.loginPanel input{
+    width:100%;
+    padding:12px;
+    margin-bottom:10px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:14px;
+}
+.loginPanel input:focus{
+    outline:none;
+    border-color:#2a5298;
+}
+.loginPanel button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:6px;
+    background:#000000;
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
+    margin-top: 10px;
+}
+.loginPanel button:hover{
+    background:#8f8f8f;
+}
+.loginPanel label{
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+}
+#result{
+    margin-top: -15px;
+    font-size: 14px;
+    color: rgb(0, 0, 0);
+}
+.lgSfundo{
+    position: absolute;
+    top: -20px;
+    left: 43.8vw;
+    width: 150px;
+    height: auto;
+}
+</style>
+<body>
+    <img src="imgs/logo/Os crias sem fundo.png" alt="" class="lgSfundo">
+    <div class="loginPanel">
+        <h1>Bem-vindo ao Banco Os Crias</h1>
+            <button onclick="window.location.href = '/pages/login/login.html'">Logar</button>
+            <button onclick="window.location.href = '/pages/register/register.html'">Registrar</button>
+    </div>
+</body>
+</html>

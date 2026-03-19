@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Os Crias</title>
+</head>
+<style>
+*{
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(35deg,#8f8f8f,#000000);
+}
+.loginPanel{
+    background:white;
+    padding:35px;
+    border-radius:10px;
+    width:400px;
+    height: 370px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    justify-content: center;
+    text-align: center;
+}
+.loginPanel h1{
+    font-size:30px;
+    margin-bottom:35px;
+    margin-top: -5px;
+}
+.loginPanel input{
+    width:100%;
+    padding:12px;
+    margin-bottom:10px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:14px;
+}
+.loginPanel input:focus{
+    outline:none;
+    border-color:#2a5298;
+}
+.loginPanel button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:6px;
+    background:#000000;
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
+    margin-top: 10px;
+}
+.loginPanel button:hover{
+    background:#8f8f8f;
+}
+.loginPanel label{
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+}
+#result{
+    margin-top: -15px;
+    font-size: 14px;
+    color: rgb(0, 0, 0);
+}
+.lgSfundo{
+    position: absolute;
+    top: -20px;
+    left: 43.8vw;
+    width: 150px;
+    height: auto;
+}
+</style>
+<body>
+    <img src="/imgs/logo/Os crias sem fundo.png" alt="" class="lgSfundo">
+    <div class="loginPanel">
+        <h1>Login</h1>
+            <label for="loginUser">CPF ou Email:</label>
+            <input type="text" id="loginUser" name="loginUser" required><br><br>
+            <label for="loginSenha">Senha:</label>
+            <input type="password" id="loginSenha" name="loginSenha" required><br><br>
+            <div id="result">  </div>
+            <button onclick="login()">Entrar</button>
+    </div>
+</body>
+<script>
+function showMessage(text, type){
+    const result = document.getElementById("result")
+    result.innerText = text
+    result.className = type
+}
+
+    async function login(){
+
+    let user = document.getElementById('loginUser').value.trim()
+    let senha = document.getElementById('loginSenha').value.trim()
+
+    if(!user || !senha){
+        showMessage("Preencha todos os campos.","error")
+        return
+    }
+
+    if (senha.length < 8 || senha.length > 16) {
+        showMessage("Senha deve ter entre 8 e 16 caracteres.", "error")
+        return
+    }
+
+    if (user.includes('@')) {
+        if (user.length > 200 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user)) {
+            showMessage("Email deve ter no máximo 200 caracteres e formato válido.", "error")
+            return
+        }
+    } else {
+        if (user.length !== 11 || !/^\d+$/.test(user)) {
+            showMessage("CPF deve ter exatamente 11 dígitos numéricos.", "error")
+            return
+        }
+    }
+
+    try{
+
+        const response = await fetch('http://191.235.240.112:8000/login',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+    login: user,
+    senha: senha
+})
+        })
+
+        const result = await response.json()
+
+        if(response.ok){
+            localStorage.setItem("token", result.token)
+            window.location.href = "/pages/home/home.html"
+        }else{
+            showMessage(result.detail || "Erro no login","error")
+        }
+
+    }catch(e){
+        showMessage("Erro na conexão com o servidor.","error")
+    }
+
+}
+</script>
+</html>
